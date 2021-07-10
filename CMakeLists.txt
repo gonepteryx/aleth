@@ -60,6 +60,8 @@ include(EthExecutableHelper)
 include(EthDependencies)
 include(EthUtils)
 
+set(TESTS False)
+
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 hunter_add_package(Boost COMPONENTS program_options filesystem system thread context fiber log)
