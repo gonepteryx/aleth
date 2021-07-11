@@ -300,7 +300,7 @@ bool BlockChain::open(fs::path const& _path, WithExisting _we)
 
     // TODO: Implement ability to rebuild details map from DB.
     auto const l = m_blocksDB->lookup(db::Slice("best"));
-    m_lastBlockNumber = info(l.empty() ? m_genesisHash : h256(l, h256::FromBinary)).number();
+    m_lastBlockNumber = info(m_lastBlockHash = l.empty() ? m_genesisHash : h256(l, h256::FromBinary)).number();
 
     LOG(m_loggerInfo) << "Opened blockchain database. Latest block hash: " << currentHash()
                       << (!rebuildNeeded ? "(rebuild not needed)" : "*** REBUILD NEEDED ***");
