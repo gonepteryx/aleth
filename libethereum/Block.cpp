@@ -773,21 +773,21 @@ void Block::commitToSeal(BlockChain const& _bc, bytes const& _extraData)
     DEV_TIMED_ABOVE("commit", 500)
         m_state.commit(removeEmptyAccounts ? State::CommitBehaviour::RemoveEmptyAccounts : State::CommitBehaviour::KeepEmptyAccounts);
 
-        LOG(m_loggerDetailed) << "Post-reward stateRoot: " << m_state.rootHash();
-        LOG(m_loggerDetailed) << m_state;
+    LOG(m_loggerDetailed) << "Post-reward stateRoot: " << m_state.rootHash();
+    LOG(m_loggerDetailed) << m_state;
 
-        m_currentBlock.setLogBloom(logBloom());
-        m_currentBlock.setGasUsed(gasUsed());
-        m_currentBlock.setRoots(hash256(transactionsMap), hash256(receiptsMap),
-            sha3(m_currentUncles), m_state.rootHash());
+    m_currentBlock.setLogBloom(logBloom());
+    m_currentBlock.setGasUsed(gasUsed());
+    m_currentBlock.setRoots(hash256(transactionsMap), hash256(receiptsMap),
+        sha3(m_currentUncles), m_state.rootHash());
 
-        m_currentBlock.setParentHash(m_previousBlock.hash());
-        m_currentBlock.setExtraData(_extraData);
-        if (m_currentBlock.extraData().size() > 32)
-        {
-            auto ed = m_currentBlock.extraData();
-            ed.resize(32);
-            m_currentBlock.setExtraData(ed);
+    m_currentBlock.setParentHash(m_previousBlock.hash());
+    m_currentBlock.setExtraData(_extraData);
+    if (m_currentBlock.extraData().size() > 32)
+    {
+        auto ed = m_currentBlock.extraData();
+        ed.resize(32);
+        m_currentBlock.setExtraData(ed);
     }
 
     m_committedToSeal = true;

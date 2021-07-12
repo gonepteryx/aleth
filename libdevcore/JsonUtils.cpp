@@ -59,7 +59,7 @@ void dev::requireJsonFields(json_spirit::mObject const& _o, std::string const& _
     }
 
     // check field types with validation map
-    for (auto const vmap : _validationMap)
+    for (auto const& vmap : _validationMap)
     {
         auto const& expectedFieldName = vmap.first;
         auto const& expectedFieldPresence = vmap.second.second;
