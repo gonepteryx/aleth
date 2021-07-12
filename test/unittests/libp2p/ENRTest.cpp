@@ -110,7 +110,7 @@ TEST(enr, parseKeysNotSorted)
     RLPStream s((keyValuePairs.size() * 2 + 2));
     s << bytes{};  // signature
     s << 0;        // sequence number
-    for (auto const keyValue : keyValuePairs)
+    for (auto const& keyValue : keyValuePairs)
     {
         s << keyValue.first;
         s.appendRaw(keyValue.second);
@@ -127,7 +127,7 @@ TEST(enr, parseKeysNotUnique)
     RLPStream s((keyValuePairs.size() * 2 + 2));
     s << bytes{};  // signature
     s << 0;        // sequence number
-    for (auto const keyValue : keyValuePairs)
+    for (auto const& keyValue : keyValuePairs)
     {
         s << keyValue.first;
         s.appendRaw(keyValue.second);

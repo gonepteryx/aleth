@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE(import_key_from_file)
 
 BOOST_AUTO_TEST_CASE(import_secret)
 {
-	for (string const& password: {"foobar", ""})
+    for (string const password: {"foobar", ""})
 	{
 		TransientDirectory storeDir;
 		string priv = "0202020202020202020202020202020202020202020202020202020202020202";
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(import_secret)
 
 BOOST_AUTO_TEST_CASE(import_secret_bytesConstRef)
 {
-	for (string const& password: {"foobar", ""})
+    for (string const password: {"foobar", ""})
 	{
 		TransientDirectory storeDir;
 		string priv = "0202020202020202020202020202020202020202020202020202020202020202";
