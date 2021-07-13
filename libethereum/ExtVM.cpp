@@ -33,38 +33,29 @@ static size_t const c_entryOverhead = 128 * 1024;
 /// On what depth execution should be offloaded to additional separated stack space.
 static unsigned const c_offloadPoint = (c_defaultStackSize - c_entryOverhead) / c_singleExecutionStackSize;
 
-void goOnOffloadedStack(Executive& _e, OnOpFunc const& _onOp)
-{
+void goOnOffloadedStack(Executive& _e, OnOpFunc const& _onOp) {
     // Set new stack size enouth to handle the rest of the calls up to the limit.
     boost::thread::attributes attrs;
     attrs.set_stack_size((c_depthLimit - c_offloadPoint) * c_singleExecutionStackSize);
+    cnote << "Offloaded stack stack size = " << (c_depthLimit - c_offloadPoint) * c_singleExecutionStackSize << " c_depthLimit = " << c_depthLimit;
 
     // Create new thread with big stack and join immediately.
     // TODO: It is possible to switch the implementation to Boost.Context or similar when the API is stable.
     boost::exception_ptr exception;
     boost::thread{attrs, [&]{
-        try
-        {
-            _e.go(_onOp);
-        }
-        catch (...)
-        {
-            exception = boost::current_exception(); // Catch all exceptions to be rethrown in parent thread.
-        }
+        try { _e.go(_onOp); }
+        catch (...) { exception = boost::current_exception(); } // Catch all exceptions to be rethrown in parent thread.
     }}.join();
-    if (exception)
-        boost::rethrow_exception(exception);
+    if (exception) boost::rethrow_exception(exception);
 }
 
-void go(unsigned _depth, Executive& _e, OnOpFunc const& _onOp)
-{
+void go(unsigned _depth, Executive& _e, OnOpFunc const& _onOp) {
     // If in the offloading point we need to switch to additional separated stack space.
     // Current stack is too small to handle more CALL/CREATE executions.
     // It needs to be done only once as newly allocated stack space it enough to handle
     // the rest of the calls up to the depth limit (c_depthLimit).
 
-    if (_depth == c_offloadPoint)
-    {
+    if (_depth == c_offloadPoint) {
         cnote << "Stack offloading (depth: " << c_offloadPoint << ")";
         goOnOffloadedStack(_e, _onOp);
     }
