@@ -220,11 +220,11 @@ public:
     unsigned number(h256 const& _hash) const { return details(_hash).number; }
     unsigned number() const { ReadGuard l(x_lastBlockHash); return m_lastBlockNumber; }
 
-    /// Get a given block (RLP format). Thread-safe.
-    h256 currentHash() const { ReadGuard l(x_lastBlockHash); return m_lastBlockHash; }
 
-    /// Get the hash of the genesis block. Thread-safe.
-    h256 genesisHash() const { return m_genesisHash; }
+    h256 currentHash() const { ReadGuard l(x_lastBlockHash); return m_lastBlockHash; } /// Get a given block (RLP format). Thread-safe.
+
+
+    h256 genesisHash() const { return m_genesisHash; } /// Get the hash of the genesis block. Thread-safe.
 
     /// Get all blocks not allowed as uncles given a parent (i.e. featured as uncles/main in parent, parent + 1, ... parent + @a _generations).
     /// @returns set including the header-hash of every parent (including @a _parent) up to and including generation + @a _generations
